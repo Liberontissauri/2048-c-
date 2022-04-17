@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.23.1)
 project (2048)
 
-add_executable(2048 main.cpp)
+add_executable(2048 src/main.cpp src/Game.cpp)
 
 SET(SFML_INCLUDE_PATH "/usr/local/include/SFML")
 SET(SFML_SYSTEM_LIBS "/usr/local/lib/libsfml-system.so.3.0")
