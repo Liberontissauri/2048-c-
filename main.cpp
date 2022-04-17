@@ -1,5 +1,6 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <string.h>
 
 void draw_game_container(sf::RenderWindow& window) {
     const float window_width = window.getSize().x;
@@ -13,7 +14,9 @@ void draw_game_container(sf::RenderWindow& window) {
     
     window.draw(game_container_shape);
 }
-void draw_block(sf::RenderWindow& window, sf::Vector2<int> grid_position) {
+void draw_block(sf::RenderWindow& window, sf::Vector2<int> grid_position, std::string text) {
+    sf::Font font;
+    font.loadFromFile("Roboto-Regular.ttf");
     const float window_width = window.getSize().x;
     const float window_height = window.getSize().y;
     sf::RectangleShape block_shape;
@@ -28,6 +31,25 @@ void draw_block(sf::RenderWindow& window, sf::Vector2<int> grid_position) {
         )
     );
     window.draw(block_shape);
+
+    sf::Text label(text, font);
+    label.setCharacterSize(window_height * 0.13);
+    label.setFillColor(sf::Color (255, 255, 255));
+    label.setPosition (sf::Vector2<float>(0,0));
+
+    auto center = label.getGlobalBounds().getSize() / 2.f;
+    auto origin = center + label.getLocalBounds().getPosition();
+    label.setOrigin(origin);
+    
+    label.setPosition(
+        window.mapPixelToCoords (sf::Vector2<int>(
+            ((window_width / 2) - window_height*0.4) + window_height * 0.2 * grid_position.x + (window_height * 0.2)/2,
+            ((window_height / 2) - window_height*0.4) + window_height * 0.2 * grid_position.y + (window_height * 0.2)/2
+            )
+        )
+    );
+    
+    window.draw(label);
 }
 
 int main()
@@ -60,7 +82,7 @@ int main()
         // clear the window with black color
         window.clear(sf::Color::Black);
         draw_game_container(window);
-        draw_block(window, sf::Vector2<int>(1, 0));
+        draw_block(window, sf::Vector2<int>(1, 0), "8");
         window.display();
     }
 
