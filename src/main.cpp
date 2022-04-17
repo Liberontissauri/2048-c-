@@ -52,9 +52,18 @@ void draw_block(sf::RenderWindow& window, sf::Vector2<int> grid_position, std::s
     
     window.draw(label);
 }
+void draw_blocks_from_2d_array(sf::RenderWindow& window, int board[4][4]) {
+    for(int y = 0; y < 4; y++) {
+        for(int x = 0; x < 4; x++) {
+            if(board[x][y] == 0) continue;
+            draw_block(window, sf::Vector2<int>(x, y), std::to_string(board[x][y]));
+        }
+    }
+}
 
 int main()
 {
+    Game mygame;
     sf::RenderWindow window(sf::VideoMode(1000, 1000), "My window");
 
     window.setTitle ("Heyheyy");
@@ -78,12 +87,28 @@ int main()
                     });
                 window.setView(window_view);
             }
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Left) {
+                mygame.push_to_left();
+                mygame.generate_new_block();
+            }
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Right) {
+                mygame.push_to_right();
+                mygame.generate_new_block();
+            }
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Up) {
+                mygame.push_to_up();
+                mygame.generate_new_block();
+            }
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Down) {
+                mygame.push_to_down();
+                mygame.generate_new_block();
+            }
         }
 
         // clear the window with black color
         window.clear(sf::Color::Black);
         draw_game_container(window);
-        draw_block(window, sf::Vector2<int>(1, 0), "8");
+        draw_blocks_from_2d_array(window, mygame.board);
         window.display();
     }
 
